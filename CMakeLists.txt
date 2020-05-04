@@ -7,13 +7,13 @@ IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/")
 
 if(WIN32)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 endif(WIN32)
 
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
@@ -169,7 +169,7 @@ set(7.in_practice
 
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
-include_directories(${CMAKE_BINARY_DIR}/configuration)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/configuration)
 
 # first create relevant static libraries requried for other projects
 add_library(STB_IMAGE "src/stb_image.cpp")
@@ -196,7 +196,7 @@ foreach(CHAPTER ${CHAPTERS})
         add_executable(${NAME} ${SOURCE})
         target_link_libraries(${NAME} ${LIBS})
         if(WIN32)
-            set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}")
+            set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin/${CHAPTER}")
         elseif(UNIX AND NOT APPLE)
             set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}")
         elseif(APPLE)
@@ -225,9 +225,9 @@ foreach(CHAPTER ${CHAPTERS})
         endforeach(SHADER)
         # if compiling for visual studio, also use configure file for each project (specifically to set up working directory)
         if(MSVC)
-            configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${NAME}.vcxproj.user @ONLY)
+            configure_file(${CMAKE_CURRENT_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${NAME}.vcxproj.user @ONLY)
         endif(MSVC)
     endforeach(DEMO)
 endforeach(CHAPTER)
 
-include_directories(${CMAKE_SOURCE_DIR}/includes)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes)
